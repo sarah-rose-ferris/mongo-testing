@@ -2,19 +2,21 @@ package com.example.mongotest
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpMethod
+import org.springframework.http.ResponseEntity
 import spock.lang.Specification
 
 @SpringBootTest
 class edMongoSpec extends Specification {
 
     @Autowired
-    private helperFunctions helpers
+    private edHelperFunctions helpers
 
 
     def 'check customer is added'() {
         given:
-        String firstName = "Ed"
-        String lastName = "Hammer"
+        String firstName = "EdNew"
+        String lastName = "Hammer2"
         int size = helpers.checkSize()
 
         when:
@@ -41,5 +43,25 @@ class edMongoSpec extends Specification {
 
         then:
         test == null
+    }
+
+    def 'get info from external api and add to db'() {
+
+        given: 'getting first and last name from external api'
+        ResponseEntity<String> result = helpers.chooseFunctionWithParam(HttpMethod.GET,3)
+        String firstName = helpers.parseFirstNameFromJson(result.getBody())
+        String lastName = helpers.parseLastNameFromJson(result.getBody())
+        int size = helpers.checkSize()
+
+        when:'adding them to database'
+        helpers.addCustomerToDatabase(firstName,lastName)
+
+        then:'checking they have been added'
+        helpers.checkCustomerAdded(firstName)
+
+        and:'checking number of customers in database has increased by one'
+        helpers.checkSize() == size+1
+
+
     }
 }

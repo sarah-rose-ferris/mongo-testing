@@ -1,12 +1,17 @@
 package com.example.mongotest
 
+import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.stereotype.Component
 import spock.lang.Specification
 
+@SpringBootTest
+@Component
 class edHelperFunctions extends Specification{
     @Autowired
     private WebController controller;
@@ -81,6 +86,27 @@ class edHelperFunctions extends Specification{
 
     public Customer getCustomer(String firstName){
         return repository.findByFirstName(firstName)
+    }
+
+    public String parseFirstNameFromJson(String input){
+        def jsonSlurper = new JsonSlurper()
+        def data = jsonSlurper.parseText(input)
+
+        //print(data.data.first_name)
+
+
+        return data.data.first_name
+
+    }
+    public String parseLastNameFromJson(String input){
+        def jsonSlurper = new JsonSlurper()
+        def data = jsonSlurper.parseText(input)
+
+        //print(data.data.last_name)
+
+
+        return data.data.last_name
+
     }
     void testIfResponseBodyContains(ResponseEntity<String> input,String contains){
         assert input.getBody().contains(contains);
