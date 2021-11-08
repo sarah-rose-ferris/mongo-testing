@@ -22,6 +22,9 @@ class helperFunctions extends Specification {
     @Autowired
     private CustomerRepository repository;
 
+    @Autowired
+    private CredentialsRepository credRepository;
+
 //test
 
     public ResponseEntity<String> chooseFunction(HttpMethod type){
@@ -89,6 +92,10 @@ class helperFunctions extends Specification {
 
     public Customer getCustomer(String firstName){
         return repository.findByFirstName(firstName)
+    }
+
+    public Credentials getCredentials(String email){
+        return credRepository.findByEmail(email)
     }
 
     public String parseFirstNameFromJson(String input){

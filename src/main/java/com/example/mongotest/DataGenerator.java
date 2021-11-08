@@ -22,4 +22,13 @@ public class DataGenerator {
         params.put("job",job);
         return params;
     }
+
+    public Map<String, Object> credentialsForUser(Credentials cred) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("email", cred.getEmail());
+        params.put("password",cred.getPassword());
+        return params;
+
+    }
+
 }

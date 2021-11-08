@@ -71,4 +71,18 @@ public class WebController {
         System.out.println(response.toString());
         return  response;
     }
+
+    @PostMapping("/correctUserCredentials")
+    public ResponseEntity<String> userCredentials(Credentials cred){
+        RestTemplate template = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        DataGenerator dataGenerator = new DataGenerator();
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(dataGenerator.credentialsForUser(cred),headers);
+        ResponseEntity<String> response = template.postForEntity("https://reqres.in/api/login", entity, String.class);
+        System.out.println(response.toString());
+        return  response;
+
+    }
 }

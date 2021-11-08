@@ -11,6 +11,9 @@ public class MongoTestApplication implements CommandLineRunner {
     @Autowired
     private CustomerRepository repository;
 
+    @Autowired
+    private CredentialsRepository credRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(MongoTestApplication.class, args);
     }
@@ -42,6 +45,32 @@ public class MongoTestApplication implements CommandLineRunner {
         for (Customer customer : repository.findByLastName("Smith")) {
             System.out.println(customer);
         }
+
+        //credentials data
+        credRepository.deleteAll();
+
+        // save some credentials
+        credRepository.save(new Credentials("eve.holt@reqres.in", "cityslicka"));
+        credRepository.save(new Credentials("sr@test.com", "test"));
+
+        // fetch credentials
+        System.out.println("Credentials found with findAll():");
+        System.out.println("-------------------------------");
+        for (Credentials cred : credRepository.findAll()) {
+            System.out.println(cred);
+        }
+        System.out.println();
+
+        // fetch an individual entry
+        System.out.println("Credential found with findByEmail('eve.holt@reqres.in'):");
+        System.out.println("--------------------------------");
+        System.out.println(credRepository.findByEmail("eve.holt@reqres.in"));
+
+        System.out.println("Customers found with findByPassword('cityslicka'):");
+        System.out.println("--------------------------------");
+        System.out.println(credRepository.findByPassword("cityslicka"));
+
+    }
     }
 
-}
+
