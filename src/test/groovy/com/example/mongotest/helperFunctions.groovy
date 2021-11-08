@@ -1,6 +1,7 @@
 package com.example.mongotest
 
 import com.example.mongotest.WebController
+import groovy.json.JsonSlurper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.HttpMethod
@@ -89,11 +90,32 @@ class helperFunctions extends Specification {
     public Customer getCustomer(String firstName){
         return repository.findByFirstName(firstName)
     }
+
+    public String parseFirstNameFromJson(String input){
+        def jsonSlurper = new JsonSlurper()
+        def data = jsonSlurper.parseText(input)
+
+        //print(data.data.first_name)
+
+
+        return data.data.first_name
+
+    }
+    public String parseLastNameFromJson(String input){
+        def jsonSlurper = new JsonSlurper()
+        def data = jsonSlurper.parseText(input)
+
+        //print(data.data.last_name)
+
+
+        return data.data.last_name
+
+    }
     void testIfResponseBodyContains(ResponseEntity<String> input,String contains){
         assert input.getBody().contains(contains);
     }
 
-    void testResponseBodyType(ResponseEntity<String> input,MediaType type){
+    void testResponseBodyType(ResponseEntity<String> input, MediaType type){
 
         assert input.getHeaders().getContentType().isCompatibleWith(type);
         //slight hack - the format of the content type from the header was different to that of the MediaType;
