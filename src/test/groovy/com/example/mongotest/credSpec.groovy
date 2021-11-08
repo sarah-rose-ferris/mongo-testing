@@ -14,7 +14,7 @@ import spock.lang.Specification
 class credSpec extends Specification{
 
     @Autowired
-    srHelperFunctions helperFunctions;
+    helperFunctions helperFunctions;
 
     def 'get credentials from db and try post request' () {
         given:

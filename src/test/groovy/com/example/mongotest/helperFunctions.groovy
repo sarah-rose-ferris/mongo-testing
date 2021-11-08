@@ -67,6 +67,10 @@ class helperFunctions extends Specification {
         return controller.updateUser();
     }
 
+    public ResponseEntity<String> putRequest(Credentials cred){
+        return controller.userCredentials(cred);
+    }
+
     public ResponseEntity<String> getExecute(){
         return controller.getTest();
     }
